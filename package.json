@@ -1,0 +1,30 @@
+{
+  "name": "crud-tasks-ybars-alan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "--watch app.js",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alany-b/crud-tasks-ybars-alan.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alany-b/crud-tasks-ybars-alan/issues"
+  },
+  "homepage": "https://github.com/Alany-b/crud-tasks-ybars-alan#readme",
+  "dependencies": {
+      "dotenv": "^17.2.1",
+      "express": "^5.1.0",
+      "mysql2": "^3.14.3",
+      "nodemon": "^3.1.10",
+      "sequelize": "^6.37.7"
+  }
+}
