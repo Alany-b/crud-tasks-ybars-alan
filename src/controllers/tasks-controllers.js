@@ -1,4 +1,4 @@
-import sequelize from "../config/database";
+import sequelize from "../config/database.js";
 import Task from "../models/tasks-models.js";
 import { Op } from "sequelize";
 // Get all tasks
