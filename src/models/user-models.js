@@ -14,7 +14,7 @@ const user = sequelize.define ("user", {
     email: {
     type: DataTypes.STRING,
     allowNull: false,
-       unique: true, // Ensure email is unique
+       unique: true, 
     },
         password: {
     type: DataTypes.STRING,
@@ -22,7 +22,6 @@ const user = sequelize.define ("user", {
     },
 }, {
     tableName: "users",
-  timestamps: true, // Automatically manage createdAt and updatedAt fields
-
+  timestamps: true, 
 });
 export default user;

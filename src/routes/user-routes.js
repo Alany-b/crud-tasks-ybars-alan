@@ -16,5 +16,3 @@ router.put("/:id", update); // Update a user by ID
 router.delete("/:id", deleteUser); // Delete a user by ID
 
 export default router;
-// This file defines the routes for user operations in the application.
-// It uses Express Router to handle HTTP requests for creating, reading, updating, and deleting users
