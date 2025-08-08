@@ -8,7 +8,7 @@ export const getAllUsers = async (req, res) => {
         const users = await user.findAll();
         res.status(200).json(users);
     } catch (error) {
-        res.status(500).json({ message: "Error retrieving users", error });
+        res.status(500).json({ message: "Error recuperando los users", error });
     }
 };
 // Create a new user
@@ -18,7 +18,7 @@ export const createUser = async (req, res) => {
         const newUser = await user.create({ name, email, password });
         res.status(201).json(newUser);
     } catch (error) {
-        res.status(500).json({ message: "Error creating user", error });
+        res.status(500).json({ message: "Error creando user", error });
     }
 }
 // Get a user by ID
@@ -29,10 +29,10 @@ export const getUserById = async (req, res) => {
         if (userData) {
             res.status(200).json(userData);
         } else {
-            res.status(404).json({ message: "User not found" });
+            res.status(404).json({ message: "Usuario no encontrado" });
         }
     } catch (error) {
-        res.status(500).json({ message: "Error retrieving user", error });
+        res.status(500).json({ message: "Error al recuperar user", error });
     }
 }
 // Update a user by ID
@@ -48,10 +48,10 @@ export const update = async (req, res) => {
             const updatedUser = await user.findByPk(id);
             res.status(200).json(updatedUser);
         } else {
-            res.status(404).json({ message: "User not found" });
+            res.status(404).json({ message: "Usuario no encontrado" });
         }
     } catch (error) {
-        res.status(500).json({ message: "Error updating user", error });
+        res.status(500).json({ message: "Error actualizando user", error });
     }
 }
 // Delete a user by ID
@@ -62,9 +62,9 @@ export const deleteUser = async (req, res) => {
         if (deleted) {
             res.status(204).send();
         } else {
-            res.status(404).json({ message: "User not found" });
+            res.status(404).json({ message: "Usuario no encontrado" });
         }
     } catch (error) {
-        res.status(500).json({ message: "Error deleting user", error });
+        res.status(500).json({ message: "Error borrando user", error });
     }
 }

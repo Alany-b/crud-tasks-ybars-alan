@@ -7,7 +7,7 @@ export const getAllTasks = async (req, res) => {
         const tasks = await Task.findAll();
         res.status(200).json(tasks);
     } catch (error) {
-        res.status(500).json({ message: "Error retrieving tasks", error });
+        res.status(500).json({ message: "Error recuperando tasks", error });
     }
 };
 // Create a new task
@@ -17,7 +17,7 @@ export const createTask = async (req, res) => {
         const newTask = await Task.create({ title, description });
         res.status(201).json(newTask);
     } catch (error) {
-        res.status(500).json({ message: "Error creating task", error });
+        res.status(500).json({ message: "Error creando task", error });
     }
 }
 // Get a task by ID
@@ -28,10 +28,10 @@ export const getTaskById = async (req, res) => {
         if (task) {
             res.status(200).json(task);
         } else {
-            res.status(404).json({ message: "Task not found" });
+            res.status(404).json({ message: "Task no encontrada" });
         }
     } catch (error) {
-        res.status(500).json({ message: "Error retrieving task", error });
+        res.status(500).json({ message: "Error recuperando task", error });
     }
 }
 // Update a task by ID
@@ -47,10 +47,10 @@ export const updateTask = async (req, res) => {
             const updatedTask = await Task.findByPk(id);
             res.status(200).json(updatedTask);
         } else {
-            res.status(404).json({ message: "Task not found" });
+            res.status(404).json({ message: "Task no encontrada" });
         }
     } catch (error) {
-        res.status(500).json({ message: "Error updating task", error });
+        res.status(500).json({ message: "Error actualizando task", error });
     }
 }
 // Delete a task by ID
@@ -61,10 +61,10 @@ export const deleteTask = async (req, res) => {
         if (deleted) {
             res.status(204).send();
         } else {
-            res.status(404).json({ message: "Task not found" });
+            res.status(404).json({ message: "Task no encontrada" });
         }
     } catch (error) {
-        res.status(500).json({ message: "Error deleting task", error });
+        res.status(500).json({ message: "Error borrando tasks", error });
     }
 }
 
