@@ -27,9 +27,9 @@ const Task = sequelize.define("task", {
         timestamps: true,
         }
 );
-
-Task.belongsTo(User, { foreignKey: "user_id" });
-User.hasMany(Task, { foreignKey: "user_id" });
-
 export default Task;
+
+Task.belongsTo(User, { foreignKey: "user_id", as: "tasks" });
+User.hasMany(Task, { foreignKey: "user_id" , as: "users" });
+
 
