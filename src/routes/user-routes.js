@@ -7,12 +7,12 @@ import {
     update,
     deleteUser,
 } from "../controllers/user-controllers.js";
-const router = Router();
+const UserRouter = Router   ();
 // Define routes for user operations
-router.get("/", getAllUsers); // Get all users
-router.post("/", createUser); // Create a new user
-router.get("/:id", getUserById); // Get a user by ID
-router.put("/:id", update); // Update a user by ID
-router.delete("/:id", deleteUser); // Delete a user by ID
+UserRouter.get("/", getAllUsers); // Get all users
+UserRouter.post("/", createUser); // Create a new user
+UserRouter.get("/:id", getUserById); // Get a user by ID
+UserRouter.put("/:id", update); // Update a user by ID
+UserRouter.delete("/:id", deleteUser); // Delete a user by ID
 
-export default router;
+export default UserRouter;

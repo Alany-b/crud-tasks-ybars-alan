@@ -9,12 +9,12 @@ import
 
 } from "../controllers/tasks-controllers.js";  
 
-const router = Router();
+const RouterTask = Router();
 // Define routes for task operations
-router.get("/", getAllTasks); // Get all tasks
-router.post("/", createTask); // Create a new task
-router.get("/:id", getTaskById); // Get a task by ID
-router.put("/:id", updateTask); // Update a task by ID
-router.delete("/:id", deleteTask); // Delete a task by ID
+RouterTask.get("/", getAllTasks); // Get all tasks
+RouterTask.post("/", createTask); // Create a new task
+RouterTask.get("/:id", getTaskById); // Get a task by ID
+RouterTask.put("/:id", updateTask); // Update a task by ID
+RouterTask.delete("/:id", deleteTask); // Delete a task by ID
 
-export default router;
+export default RouterTask;
