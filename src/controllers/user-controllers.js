@@ -1,70 +1,159 @@
-import sequelize from "../config/database.js";
-import user from "../models/user-models.js";
+
+import Task from "../models/task-models.js";
+import User from "../models/user-models.js";
 import { Op } from "sequelize";
 
-// Get all users
-export const getAllUsers = async (req, res) => {
-    try {
-        const users = await user.findAll();
-        res.status(200).json(users);
-    } catch (error) {
-        res.status(500).json({ message: "Error retrieving users", error });
-    }
-};
-// Create a new user
 export const createUser = async (req, res) => {
+  try {
     const { name, email, password } = req.body;
-    try {
-        const newUser = await user.create({ name, email, password });
-        res.status(201).json(newUser);
-    } catch (error) {
-        res.status(500).json({ message: "Error creating user", error });
-    }
-}
-// Get a user by ID
-export const getUserById = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const userData = await user.findByPk(id);
-        if (userData) {
-            res.status(200).json(userData);
-        } else {
-            res.status(404).json({ message: "User not found" });
-        }
-    } catch (error) {
-        res.status(500).json({ message: "Error retrieving user", error });
-    }
-}
-// Update a user by ID
-export const update = async (req, res) => {
-    const { id } = req.params;
+    if (
+      name === "" ||
+      name === undefined ||
+      name === null ||
+      email === "" ||
+      email === undefined ||
+      email === null ||
+      password === "" ||
+      password === undefined ||
+      password === null
+    )
+      return res
+        .status(400)
+        .json({ message: "Los campos no deben estar vacios" });
+
+    if (name.length > 100)
+      return res
+        .status(400)
+        .json({ message: "El nombre no debe tener más de 100 caracteres" });
+
+    if (email.length > 100)
+      return res
+        .status(400)
+        .json({ message: "El email no debe tener más de 100 caracteres" });
+
+    const emailExiste = await User.findOne({ where: { email: email } });
+    if (emailExiste)
+      return res.status(400).json({ message: "Ya existe el email" });
+
+    if (password.length > 100)
+      return res
+        .status(400)
+        .json({ message: "El password no debe tener más de 100 caracteres" });
+
+    const crearUsusario = await User.create(req.body);
+    return res.status(201).json(crearUsusario);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getByIdUser = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id, {
+      attributes: { exclude: ["password"] },
+      include: [
+        {
+          model: Task,
+          as: "tasks",
+          attributes: { exclude: ["user_id", "id"] },
+        },
+        {
+          model: AdditionalInfo,
+          as: "additional_info",
+          attributes: { exclude: ["id", "user_id"] },
+        },
+      ],
+    });
+    if (!user) return res.status(404).json({ message: "El usuario no existe" });
+    return res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getAllUser = async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: { exclude: ["password"] },
+      include: [
+        {
+          model: Task,
+          as: "tasks",
+          attributes: { exclude: ["user_id", "id"] },
+        },
+        {
+          model: AdditionalInfo,
+          as: "additional_info",
+          attributes: { exclude: ["id", "user_id"] },
+        },
+      ],
+    });
+    if (users.length == 0) return res.json({ message: "No existen usuarios" });
+    return res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
     const { name, email, password } = req.body;
-    try {
-        const [updated] = await user.update(
-            { name, email, password },
-            { where: { id } }
-        );
-        if (updated) {
-            const updatedUser = await user.findByPk(id);
-            res.status(200).json(updatedUser);
-        } else {
-            res.status(404).json({ message: "User not found" });
-        }
-    } catch (error) {
-        res.status(500).json({ message: "Error updating user", error });
+    if (
+      name === "" ||
+      name === undefined ||
+      email === "" ||
+      email === undefined ||
+      password === "" ||
+      password === undefined
+    )
+      return res
+        .status(400)
+        .json({ message: "Los campos no deben estar vacios" });
+
+    if (name.length > 100)
+      return res
+        .status(400)
+        .json({ message: "El nombre no debe tener más de 100 caracteres" });
+
+    if (email.length > 100)
+      return res
+        .status(400)
+        .json({ message: "El email no debe tener más de 100 caracteres" });
+
+    const emailExiste = await User.findOne({
+      where: { email: email, id: { [Op.ne]: req.params.id } },
+    });
+    if (emailExiste)
+      return res.status(400).json({ message: "Ya existe el email" });
+
+    if (password.length > 100)
+      return res
+        .status(400)
+        .json({ message: "El password no debe tener más de 100 caracteres" });
+
+    const [update] = await User.update(req.body, {
+      where: { id: req.params.id },
+    });
+    if (update) {
+      const actualizarUser = await User.findByPk(req.params.id);
+      return res.status(200).json(actualizarUser);
+    } else {
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
-}
-// Delete a user by ID
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export const deleteUser = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const deleted = await user.destroy({ where: { id } });
-        if (deleted) {
-            res.status(204).send();
-        } else {
-            res.status(404).json({ message: "User not found" });
-        }
-    } catch (error) {
-        res.status(500).json({ message: "Error deleting user", error });
-    }
-}
+  try {
+    const eliminarUsusario = await User.destroy({
+      where: { id: req.params.id },
+    });
+    if (!eliminarUsusario)
+      return res.status(404).json({ message: "El usuario no existe" });
+    return res.status(200).json({ message: "Usuario eliminado" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
